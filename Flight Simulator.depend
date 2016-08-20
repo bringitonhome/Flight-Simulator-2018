@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1471596057 source:d:\keep\c++ programs\flight simulator\main.cpp
+	<iostream>
+	<stdio.h>
+	<SFML/Window.hpp>
+	<SFML/Graphics.hpp>
+	<SFML/OpenGL.hpp>
+	<SFML/Audio.hpp>
+	<math.h>
+	<ctime>
+
