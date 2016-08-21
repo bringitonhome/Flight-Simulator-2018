@@ -9,3 +9,13 @@
 	<math.h>
 	<ctime>
 
+1471767225 source:d:\keep\c++ programs\flight-simulator-2018\main.cpp
+	<iostream>
+	<stdio.h>
+	<SFML/Window.hpp>
+	<SFML/Graphics.hpp>
+	<SFML/OpenGL.hpp>
+	<SFML/Audio.hpp>
+	<math.h>
+	<ctime>
+

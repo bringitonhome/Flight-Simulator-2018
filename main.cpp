@@ -55,7 +55,7 @@
 #define AI_ZERO_LIFT_DRAG 10
 
 //Aerodynamics
-#define NUM_AD 8
+#define NUM_AD 9
 #define AD_ATTACK_ANGLE 0
 #define AD_LIFT_COEFFICIENT 1
 #define AD_DRAG_COEFFICIENT 2
@@ -64,6 +64,7 @@
 #define AD_THRUST_AVAILABLE 5
 #define AD_ACTUAL_THRUST 6
 #define AD_MACH 7
+#define AD_STALL 8
 
 //Dynamics
 #define NUM_D 7
@@ -82,22 +83,23 @@
 #define I_OPEN_SWITCH 3
 #define I_FLIP_SWITCH 4
 
-#define NUM_S 12
+#define NUM_S 13
 #define S_CLOUD1 0
 #define S_CLOUD2 1
 #define S_CLOUD3 2
 #define S_PLANE 3
 #define S_PITCH_DIAL_SCALE 4
-#define S_DASHBOARD 5
+#define S_STALL_LIGHT 5
+#define S_DASHBOARD 6
 
-#define S_MACH_ARROW 6
-#define S_VELOCITY_ARROW 7
-#define S_ALTITUDE_ARROW 8
+#define S_MACH_ARROW 7
+#define S_VELOCITY_ARROW 8
+#define S_ALTITUDE_ARROW 9
 
-#define S_THROTTLE_BAR 9
-#define S_A_Y_BAR 10
+#define S_THROTTLE_BAR 10
+#define S_A_Y_BAR 11
 
-#define S_ATTACK_ANGLE_BAR 11
+#define S_ATTACK_ANGLE_BAR 12
 
 
 
@@ -121,7 +123,7 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(WW, WH), "Flight Simulator 2018");
     //window.setPosition(sf::Vector2i(200, 0));
 
-/*
+
     sf::Music song;
     if(!song.openFromFile("80s Action Tune.wav")){
         return -1;
@@ -144,7 +146,7 @@ int main(){
         mach[x].setVolume(10);
     }
 
-*/
+
 
 
     sf::Sprite sprites[NUM_S];
@@ -186,6 +188,9 @@ int main(){
     sprites[S_PLANE].setOrigin(30.5, 7.5);
 
     sprites[S_PITCH_DIAL_SCALE].setTextureRect(sf::IntRect(165, 5, 25, 25));
+
+    sprites[S_STALL_LIGHT].setTextureRect(sf::IntRect(85, 50, 5, 5));
+    sprites[S_STALL_LIGHT].setPosition(sprites[S_DASHBOARD].getGlobalBounds().left+55*SCALE, sprites[S_DASHBOARD].getGlobalBounds().top + 7*SCALE);
 
     sprites[S_MACH_ARROW].setTextureRect(sf::IntRect(145, 10, 3, 10));
     sprites[S_MACH_ARROW].setOrigin(1.5, 1.5);
@@ -386,17 +391,17 @@ void getConditions(float conditions[]){ //Based only on altitude
 
 void getAerodynamics(float aerodynamics[], float aircraftInfo[], float dynamics[], float conditions[]){
 
-    bool stall = false;
+    aerodynamics[AD_STALL] = (float)false;
     static float previousLift = 0;
 
     aerodynamics[AD_MACH] = dynamics[D_V_R]/sqrt(GAMMA_AIR*GAS_CONSTANT*conditions[C_TEMPERATURE]);
     if(aerodynamics[AD_ATTACK_ANGLE] > aircraftInfo[AI_STALL_ANGLE] || aerodynamics[AD_ATTACK_ANGLE] < -aircraftInfo[AI_STALL_ANGLE]){
-        stall = true;
+        aerodynamics[AD_STALL] = (float)true;
         aerodynamics[AD_LIFT_COEFFICIENT] = 0;
     }
 
     //Low Speed
-    if(stall == false){
+    if((bool)aerodynamics[AD_STALL] == false){
         aerodynamics[AD_LIFT_COEFFICIENT] = aircraftInfo[AI_A_FINITE]*(aerodynamics[AD_ATTACK_ANGLE] - aircraftInfo[AI_ZERO_LIFT_ANGLE]);
         if(aerodynamics[AD_MACH] < 1){//Subsonic
             aerodynamics[AD_LIFT_COEFFICIENT] = aerodynamics[AD_LIFT_COEFFICIENT]/sqrt(1-pow(aerodynamics[AD_MACH], 2));
@@ -455,6 +460,13 @@ void displayEverything(sf::RenderWindow* window, float conditions[], float aircr
         sprites[S_PITCH_DIAL_SCALE].setPosition((WW-sprites[S_PITCH_DIAL_SCALE].getGlobalBounds().width)/2, sprites[S_DASHBOARD].getGlobalBounds().top + 34*SCALE + 3*((int)userInputs[I_ANGLE]%5)*SCALE/5);
     }
     else if(userInputs[I_ANGLE] < -90){
+    }
+
+    if((bool)aerodynamics[AD_STALL] == true){
+        sprites[S_STALL_LIGHT].setTextureRect(sf::IntRect(85, 55, 5, 5));
+    }
+    else{
+        sprites[S_STALL_LIGHT].setTextureRect(sf::IntRect(85, 50, 5, 5));
     }
 
     sprites[S_MACH_ARROW].setRotation(45 + aerodynamics[AD_MACH]*45);
