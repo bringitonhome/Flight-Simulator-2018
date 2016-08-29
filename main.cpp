@@ -283,14 +283,14 @@ int main(){
         displayEverything(&window, conditions, aircraftInfo, aerodynamics, dynamics, userInputs, sprites);
         updatePhysics(conditions, dynamics, aerodynamics, aircraftInfo, userInputs);
 
-/*
+
         if(currentMach < 1 && aerodynamics[AD_MACH] > 1){
             mach[0].play();
         }
         if(currentMach < 2 && aerodynamics[AD_MACH] > 2){
             mach[1].play();
         }
-        */
+
 
         currentMach = aerodynamics[AD_MACH];
 
@@ -507,13 +507,14 @@ void displayEverything(sf::RenderWindow* window, float conditions[], float aircr
 
     (*window).display();
 
-    //cout << "Altitude: " << conditions[C_ALTITUDE]/1000 << " km, Temperature: " << conditions[C_TEMPERATURE] << " K, Pressure: " << conditions[C_PRESSURE]/1000 << " kPa, Density: " << conditions[C_DENSITY] << " kg/m^3" << endl;
+/*
+    cout << "Altitude: " << conditions[C_ALTITUDE]/1000 << " km, Temperature: " << conditions[C_TEMPERATURE] << " K, Pressure: " << conditions[C_PRESSURE]/1000 << " kPa, Density: " << conditions[C_DENSITY] << " kg/m^3" << endl;
     cout << "Input Angle: " << userInputs[I_ANGLE] << " deg, Input Throttle: " << userInputs[I_THROTTLE]*100 << " %" << endl;
-    //cout << "Mach: " << aerodynamics[AD_MACH] << ", Attack Angle: " << aerodynamics[AD_ATTACK_ANGLE] << " deg, Lift Coefficient: " << aerodynamics[AD_LIFT_COEFFICIENT] << ", Drag Coefficient: " << aerodynamics[AD_DRAG_COEFFICIENT] << ", Lift: " << aerodynamics[AD_LIFT] << " N, Drag: " << aerodynamics[AD_DRAG] << " N, Thrust: " << aerodynamics[AD_ACTUAL_THRUST] << " N" << endl;
-    //cout << "Vx: " << dynamics[D_V_X] << " m/s, Vy: " << dynamics[D_V_Y] << " m/s, Ax: " << dynamics[D_A_X] << " m/s^2, Ay: " << dynamics[D_A_Y] << endl;
+    cout << "Mach: " << aerodynamics[AD_MACH] << ", Attack Angle: " << aerodynamics[AD_ATTACK_ANGLE] << " deg, Lift Coefficient: " << aerodynamics[AD_LIFT_COEFFICIENT] << ", Drag Coefficient: " << aerodynamics[AD_DRAG_COEFFICIENT] << ", Lift: " << aerodynamics[AD_LIFT] << " N, Drag: " << aerodynamics[AD_DRAG] << " N, Thrust: " << aerodynamics[AD_ACTUAL_THRUST] << " N" << endl;
+    cout << "Vx: " << dynamics[D_V_X] << " m/s, Vy: " << dynamics[D_V_Y] << " m/s, Ax: " << dynamics[D_A_X] << " m/s^2, Ay: " << dynamics[D_A_Y] << endl;
 
-    //cout << endl;
-
+    cout << endl;
+*/
 
 
     //cout << dynamics[D_V_ANGLE] << " " << sprites[S_CLOUD1].getPosition().x << " " << sprites[S_CLOUD1].getPosition().y << endl;
